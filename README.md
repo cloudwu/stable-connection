@@ -3,7 +3,7 @@ Stable Connection
 
 这个模块的最初想法记录在 http://blog.codingnow.com/2014/02/connection_reuse.html ， 但最终实现的时候 API 有所变化。
 
-我想加强 TCP 连接的稳定性，在 Client 失去 Server 的响应后（通常在应用层用心跳保持），可以重新发起一个 TCP 连接，取代之前的连接。这个模块可以完成这项工作，但模块本身不设计 socket api ，它仅仅封装了控制协议。并且，这个模块会顺便对数据做简单的加密。
+我想加强 TCP 连接的稳定性，在 Client 失去 Server 的响应后（通常在应用层用心跳保持），可以重新发起一个 TCP 连接，取代之前的连接。这个模块可以完成这项工作，但模块本身不涉及 socket api ，它仅仅封装了控制协议。并且，这个模块会顺便对数据做简单的加密。
 
 Server API
 ==========
