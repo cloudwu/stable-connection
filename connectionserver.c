@@ -591,6 +591,9 @@ cp_send(struct connection_pool *cp, int id, const char *buffer, size_t sz) {
 	uint8_t * output = NULL;
 	if (c->fd >= 0) {
 		output = new_outmessage(cp, c->fd, sz);
+	} else {
+		// remote client closed
+		return;
 	}
 	int head = c->sendcount % FINGERPRINTCHUNKSIZE;
 	if (head > 0) {
