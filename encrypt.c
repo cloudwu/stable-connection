@@ -100,9 +100,9 @@ hmac(uint64_t x, uint64_t y) {
 	d = 0x10325476u;
 
 	for (i=0;i<16;i+=4) {
-		w[i] = (uint32_t)(x << 32);
+		w[i] = (uint32_t)(x >> 32);
 		w[i+1] = (uint32_t)x;
-		w[i+2] = (uint32_t)(y << 32);
+		w[i+2] = (uint32_t)(y >> 32);
 		w[i+3] = (uint32_t)y;
 	}
 
