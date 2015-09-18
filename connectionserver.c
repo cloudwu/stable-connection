@@ -406,7 +406,10 @@ handshake_new(struct connection_pool *cp, struct handshake *hs, const uint8_t *b
 
 		// D-H key exchange
 
-		uint64_t B = leuint64(&hs->buffer[8]);		
+		uint64_t B = leuint64(&hs->buffer[8]);
+		if (B == 0) {
+			B = 1;	// B can never be zero unless be attack.
+		}
 		uint64_t a = randomint64();
 		uint64_t A = powmodp(G, a);
 		hs->secret = powmodp(B,a);
