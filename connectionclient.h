@@ -22,5 +22,6 @@ void cc_recv(struct connection *, const char * buffer, size_t sz);
 #define MESSAGE_OUT 2
 
 int cc_poll(struct connection *, struct connection_message *);
+int cc_fetch(struct connection *, struct connection_message *);
 
 #endif

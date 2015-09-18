@@ -322,13 +322,17 @@ cc_send(struct connection *c, const char * buffer, size_t sz) {
 }
 
 static void
-fill_message(struct connection *c, struct connection_message *m) {
-	m->sz = c->temp->sz;
-	if (m->sz == 0) {
-		m->buffer = NULL;
+do_fill_message(struct message *m, struct connection_message *cm) {
+	cm->sz = m->sz;
+	if (cm->sz == 0) {
+		cm->buffer = NULL;
 	} else {
-		m->buffer = (const char *)c->temp->buffer;
+		cm->buffer = (const char*)m->buffer;
 	}
+}
+static void
+fill_message(struct connection *c, struct connection_message *m) {
+	do_fill_message(c->temp, m);
 }
 
 int 
@@ -353,6 +357,23 @@ cc_poll(struct connection *c, struct connection_message *m) {
 			c->in_tail = NULL;
 		}
 		fill_message(c,m);
+		return MESSAGE_IN;
+	}
+	return MESSAGE_EMPTY;
+}
+
+int
+cc_fetch(struct connection *c, struct connection_message *m) {
+	if (c->temp) {
+		free(c->temp);
+		c->temp = NULL;
+	}
+	if (c->out_head) {
+		do_fill_message(c->out_head, m);
+		return MESSAGE_OUT;
+	} 
+	if (c->in_head) {
+		do_fill_message(c->in_head, m);
 		return MESSAGE_IN;
 	}
 	return MESSAGE_EMPTY;

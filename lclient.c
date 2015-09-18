@@ -53,6 +53,19 @@ lpoll(lua_State *L) {
 }
 
 static int
+lfetch(lua_State* L) {
+	struct connection *c = get_self(L);
+	struct connection_message msg;
+	int t = cc_fetch(c, &msg);
+	if (t == MESSAGE_EMPTY) {
+		return 0;
+	}
+	lua_pushinteger(L, t);
+	lua_pushlstring(L, msg.buffer, msg.sz);
+	return 2;
+}
+
+static int
 lhandshake(lua_State *L) {
 	struct connection *c = get_self(L);
 	cc_handshake(c);
@@ -68,6 +81,7 @@ lclient(lua_State *L) {
 			{ "send", lsend },
 			{ "recv", lrecv },
 			{ "poll", lpoll },
+			{ "fetch", lfetch },
 			{ NULL, NULL },
 		};
 		luaL_newlib(L,l);
