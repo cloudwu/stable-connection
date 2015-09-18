@@ -54,9 +54,9 @@ powmodp(uint64_t a, uint64_t b) {
 uint64_t
 randomint64() {
 	uint64_t a = rand();
-	uint64_t b = rand();
-	uint64_t c = rand();
-	uint64_t d = rand();
+	uint64_t b = rand() & 0xffff;
+	uint64_t c = rand() & 0xffff;
+	uint64_t d = (rand() & 0xffff) + 1;	// avoid result 0
 	return a << 48 | b << 32 | c << 16 | d;
 }
 
